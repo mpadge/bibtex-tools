@@ -1,0 +1,38 @@
+" The latex changes option uses /added[][]{}, /deleted, /replaced commands, but provides 
+" no way to do a simple `accept all changes.' This is what this vim script does.
+" To run it:
+" 1. Select function
+" 2. Yank it
+" 3. > :@" to store it, and
+" 4. run it with :call
+
+function! MySearch()
+    normal zR 
+    normal gg
+    while search ('\\deleted', 'w')
+        let [ln0, cn0] = searchpos ('\\deleted', 'w')
+        normal ma
+        call search ('{', 'w')
+        normal %mb`ad`bx
+    endwhile
+
+    normal gg
+    while search ('\\added', 'w')
+        let [ln0, cn0] = searchpos ('\\added', 'w')
+        normal ma
+        call search ('{', 'w')
+        normal mb%x`ad`bx
+    endwhile
+
+    normal gg
+    while search ('\\replaced', "w")
+        let [ln0, cn0] = searchpos ('\\replaced', 'w')
+            normal ma
+            call search ('{', 'w')
+            normal mb%mc
+            call search ('{', 'w')
+            normal md%me`dd`ex`cx`ad`bx
+    endwhile
+endfunction
+
+:call MySearch()
