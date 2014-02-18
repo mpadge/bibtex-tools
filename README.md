@@ -1,4 +1,4 @@
-bibtex-scripts
+bibtex-tools
 ==============
 
 Scripts to do various useful tricks with tex and bibtex files. Includes:  
