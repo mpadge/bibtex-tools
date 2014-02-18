@@ -10,3 +10,8 @@ Scripts to do various useful tricks with tex and bibtex files. Includes:
                     a given .tex file.  References are also stripped down by removing 
                     all non-essential details such as personal reviews.
 
+3. make_lit_review.py - Reads a .tex file, strips all bibtex keys from that file, 
+                        then scans a .bib file for those references, and produces a 
+                        nicely formatted pdf literature review based on the bibtex
+                        review fields for each entry.
+
