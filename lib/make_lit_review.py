@@ -81,7 +81,8 @@ class Ref (object):
     pages = property (get_pages, set_pages)
     review = property (get_review, set_review)
 
-field_names = ["author", "title", "journal", "year", "volume", "pages", "review"]
+# Field names may or may not need capitalisation
+field_names = ["Author", "Title", "Journal", "Year", "Volume", "Pages", "Review"]
 
 def writeHeader (fout):
     fout.write ('\\documentclass[a4paper,oneside]{article}\n\n')
@@ -116,7 +117,7 @@ def writeHeader (fout):
     return
 
 def readBibKeys ():
-    f = open (wd + 'urban_clusters.tex', 'r')
+    f = open (wd + 'tex_document.tex', 'r')
     f.seek (0) 
     rec = re.compile (r'\\cite')
     ref_split = rec.split (f.read ())
@@ -161,17 +162,23 @@ def readReviews (bibkeys):
                 year = -9999
                 author = ''
                 for fn in field_names:
-                    fnplus = fn + " = {"
+                    # The \s* indicates optional whitespace (of any length)
+                    fnplus = fn + "\s*=\s*{"
                     fpos = re.search (fnplus + '(.*?)', entry)
                     if fpos is not None:
                         fpos = fpos.start ()
                         result = regex.search (r''' (?<rec> \{ (?: [^{}]++ | (?&rec))* \})''',\
                                 entry [fpos:flen], flags=regex.VERBOSE)
                         field = result.captures ('rec')
-                        field = ''.join (field) # converts to single string
-                        # The next line strips off the brackets {}:
-                        field = re.compile ('[%s]' % '{}').sub('', field)
-                        if fn == 'author':
+                        # field will just be author if there are no {}'s present,
+                        # otehrwise regex will parse an entry for the contents of
+                        # each '{}', with the desired author string as the final
+                        # element of field. This element also starts with '{' and
+                        # ends with '}' so is itself reduced to [1:-1] thus:
+                        field = field [-1] [1:-1]
+                        #if fn == 'Review' and bibkey.group (1) == 'Ives2003':
+                        #    print field
+                        if fn == 'Author' or fn == 'author':
                             author = re.split (r',', field) [0]
                             # If first entry prior to comma has no spaces, it is
                             # taken as surname, otherwise search for "and" and take
@@ -191,7 +198,7 @@ def readReviews (bibkeys):
                         if spos_sp >= 0:
                             field = field.replace (" \&", " \\&")
 
-                        setattr (ref1, str (fn), field)
+                        setattr (ref1, str (fn).lower (), field)
 
                 reviews.append (ref1)
 
@@ -214,7 +221,7 @@ def writeReviews (reviews, file):
         fout.write ("\mitem{" + rev.author + ' (' + str (rev.year) +\
                 '), ``' + rev.title + "'' ")
         if not rev.journal is None:
-            fout.write ("{\\textit " + rev.journal + "} {\\textbf " + rev.volume + "}")
+            fout.write ("\\textit{" + rev.journal + "} \\textbf{" + rev.volume + "}")
             if not rev.pages is None:
                 fout.write (":" + rev.pages)
         elif not rev.pages is None:
