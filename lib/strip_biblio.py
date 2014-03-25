@@ -71,7 +71,7 @@ http://stackoverflow.com/questions/5454322/python-how-to-match-nested-parenthese
     result = regex.search(r''' (?<rec> #capturing recursive group
         \{      # open parenthesis
         (?:     # non-capturing group
-        [^{}]++ # anyting but brackets one or more times without backtracking
+        [^{}]++ # anything but brackets one or more times without backtracking
         |       # or
         (?&rec) # recursive substitute of group rec
         )*      # close non-capturing group
