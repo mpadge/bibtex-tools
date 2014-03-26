@@ -1,4 +1,4 @@
-" The latex changes option uses /added[][]{}, /deleted, /replaced commands, but provides 
+" The latex changes package uses /added[][]{}, /deleted, /replaced commands, but provides 
 " no way to do a simple `accept all changes.' This is what this vim script does.
 " To run it:
 " 1. Select function
