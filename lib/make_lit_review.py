@@ -176,8 +176,6 @@ def readReviews (bibkeys):
                         # element of field. This element also starts with '{' and
                         # ends with '}' so is itself reduced to [1:-1] thus:
                         field = field [-1] [1:-1]
-                        #if fn == 'Review' and bibkey.group (1) == 'Ives2003':
-                        #    print field
                         if fn == 'Author' or fn == 'author':
                             author = re.split (r',', field) [0]
                             # If first entry prior to comma has no spaces, it is
