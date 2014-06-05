@@ -10,7 +10,7 @@ import re
 import regex
 
 # Read .tex file and extract bibtex citation keys:
-f = open ('tex_file_name.tex', 'r')
+f = open ('texfile.tex', 'r')
 f.seek (0) 
 rec = re.compile (r'\\cite')
 ref_split = rec.split (f.read ())
@@ -79,13 +79,18 @@ http://stackoverflow.com/questions/5454322/python-how-to-match-nested-parenthese
         )''', entry, flags=regex.VERBOSE)
 """
 
-fin = open ('main_bibliography_file.bib', 'r')
+fin = open ('library.bib', 'r')
 flen = len (fin.read ())
 fin.seek (0)
 fout = open ('aaa.bib', 'w')
-# There is no matching backwards with regex, so positions of all references are
-# first put in an index
-entry_start = [m.start() for m in re.finditer('@',fin.read())]
+"""
+There is no matching backwards with regex, so positions of all references are first
+put in an index. The find in this case is "@" followed by anything ("." for
+anything, and "*" for unspecified number of repeats) and finishing in "{". This is
+because the "@" symbol also appears in email addresses, but all of these cases will
+then first end with "}". Actually, i'm note sure exactly why this works at all ...
+"""
+entry_start = [m.start() for m in re.finditer('@.*{',fin.read())]
 print 'Bibliography has', len (entry_start), 'entries.'
 # These are the field names dumped to the reduced .bib - modify as desired.
 field_names = ["author", "title", "journal", "year", "volume", "pages", "doi",
@@ -113,7 +118,7 @@ for cite in ref_list:
     eolc = re.compile (r'\n')
     while end_check:
         m = re.match (r'(\w)*', entry [epos0:elen]).group (0)
-        if m in field_names:
+        if m.lower() in field_names:
             epos1 = re.search ('{', entry [epos0:elen])
             if not epos1:
                 print 'ERROR: opening { not found in field.'
