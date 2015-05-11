@@ -207,6 +207,7 @@ def readReviews (bibkeys):
 
 def writeReviews (reviews, file):
     year = reviews [0].year
+    fout.write ("\\greenheading{" + str (rev.year) + "}\\\\" + "\n\n")
 
     for rev in reviews:
         if rev.year > year
