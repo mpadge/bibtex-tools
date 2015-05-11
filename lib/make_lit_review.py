@@ -200,21 +200,18 @@ def readReviews (bibkeys):
 
                 reviews.append (ref1)
 
+    map (lambda s: int (s.year), reviews) # not really necessary
     reviews = sorted (reviews, key = lambda s:(s.year, s.author))
 
     return reviews
 
 def writeReviews (reviews, file):
     year = reviews [0].year
-    yearwrite = True
 
     for rev in reviews:
-        if yearwrite:
+        if rev.year > year
             fout.write ("\\greenheading{" + str (rev.year) + "}\\\\" + "\n\n")
-            yearwrite = False
-        elif rev.year > year:
             year = rev.year
-            yearwrite = True
 
         fout.write ("\mitem{" + rev.author + ' (' + str (rev.year) +\
                 '), ``' + rev.title + "'' ")
