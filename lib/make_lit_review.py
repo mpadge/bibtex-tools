@@ -217,7 +217,9 @@ def writeReviews (reviews, file):
         fout.write ("\mitem{" + rev.author + ' (' + str (rev.year) +\
                 '), ``' + rev.title + "'' ")
         if not rev.journal is None:
-            fout.write ("\\textit{" + rev.journal + "} \\textbf{" + rev.volume + "}")
+            fout.write ("\\textit{" + rev.journal + "}")
+            if not rev.volume is None:
+                fout.write ("\\textbf{" + rev.volume + "}")
             if not rev.pages is None:
                 fout.write (":" + rev.pages)
         elif not rev.pages is None:
@@ -241,7 +243,7 @@ def makePdf ():
     os.system ("rm lit_review.aux lit_review.dvi lit_review.log");
     return
 
-fout = open (wd + 'lit_review.tex', 'w')
+fout = open (wd + 'lit-review.tex', 'w')
 bibkeys = readBibKeys ()
 reviews = readReviews (bibkeys)
 writeHeader (fout)
