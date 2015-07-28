@@ -88,6 +88,7 @@ def writeHeader (fout):
     fout.write ('\\documentclass[a4paper,oneside]{article}\n\n')
     fout.write ('\\usepackage[left=2.54cm,right=2.54cm,top=3cm,bottom=3cm]' +
             '{geometry}\n')
+    fout.write ('\\usepackage{amsmath}\n')
     fout.write ('\\usepackage{color}\n')
     fout.write ('\\renewcommand{\\familydefault}{\\sfdefault}\n')
     fout.write ('\\usepackage{sfmath}\n')
@@ -125,6 +126,11 @@ def readBibKeys ():
     bibkeys = []
     for cites in ref_split:
         bpos = re.search (r'{', cites).start ()
+        # Strip any preceding cite pre/suf-fixes in [][]
+        if re.search (r']', cites) is not None:
+            if re.search (r']', cites).start () < bpos:
+                cites = re.split (r']', cites)[2]
+                bpos = re.search (r'{', cites).start ()
         if (bpos < 2): # only include actual '\citeX{' commands
             ref_list_temp = re.split (r'{', cites) [1]
             ref_list_temp = re.split (r'}', ref_list_temp) [0]
