@@ -88,8 +88,8 @@ def writeHeader (fout):
     fout.write ('\\documentclass[a4paper,oneside]{article}\n\n')
     fout.write ('\\usepackage[left=2.54cm,right=2.54cm,top=3cm,bottom=3cm]' +
             '{geometry}\n')
-    fout.write ('\\usepackage{amsmath}\n')
-    fout.write ('\\usepackage{color}\n')
+    fout.write ('\\usepackage{amsmath,color}\n')
+    fout.write ('\\usepackage{hyperref}\n')
     fout.write ('\\renewcommand{\\familydefault}{\\sfdefault}\n')
     fout.write ('\\usepackage{sfmath}\n')
     fout.write ('\\title{Literature review}\n')
@@ -108,12 +108,16 @@ def writeHeader (fout):
     fout.write ('\\newcommand{\\greenheading}[1]{%\n')
     fout.write ('\t\\vspace{10pt}\n')
     fout.write ('\t\\noindent\\color{greencolour}\n')
+    fout.write ('\t\\refstepcounter{section}%\n')
+    fout.write ('\t\\addcontentsline{toc}{section}{#1}%\n')
     fout.write ('\t{\\rule[3pt]{0.15\\textwidth}{2pt}}\\hspace{0.025\\textwidth}\n')
     fout.write ('\t{\\bf\\Large{\\framebox[1.5\\width]{#1}}}%\n')
     fout.write ('\t\\color{black}\\normalsize\\vspace{10pt}}\\\\%\n\n')
 
     fout.write ('\\begin{document}\n')
     fout.write ('\\maketitle\n')
+    fout.write ('\\tableofcontents\n')
+    fout.write ('\\vspace{2cm}\n')
     fout.write ('\\setcounter{qcounter}{1}\n')
     return
 
@@ -245,7 +249,11 @@ def writeReviews (reviews, file):
 def makePdf ():
     os.chdir (wd)
     os.system ("latex -interaction=nonstopmode lit_review.tex");
-    os.system ("dvipdfmx lit_review.dvi");
+    os.system ("latex -interaction=nonstopmode lit-review.tex");
+    #os.system ("dvipdfmx lit-review.dvi");
+    # hyperref necessitates div->ps->pdf
+    os.system ("dvips -P pdf -q lit-review.dvi");
+    os.system ("ps2pdf lit-review.ps");
     os.system ("rm lit_review.aux lit_review.dvi lit_review.log");
     return
 
