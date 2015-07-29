@@ -227,7 +227,7 @@ def writeReviews (reviews, file):
         fout.write ("\mitem{" + rev.author + ' (' + str (rev.year) +\
                 '), ``' + rev.title + "'' ")
         if not rev.journal is None:
-            fout.write ("\\textit{" + rev.journal + "}")
+            fout.write ("\\textit{" + rev.journal + "} ")
             if not rev.volume is None:
                 fout.write ("\\textbf{" + rev.volume + "}")
             if not rev.pages is None:
