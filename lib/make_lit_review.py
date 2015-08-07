@@ -97,22 +97,28 @@ def writeHeader (fout):
     fout.write ('\\date{}\n')
     fout.write ('\\newcounter{qcounter}\n')
 
-    fout.write ('\\newcommand{\\mitem}[2] {\\noindent\\framebox' +
-        '{\\noindent\\begin{minipage}{0.95\\textwidth}\n')
-    fout.write ('\t\t{\\arabic{qcounter}.~#1}\\stepcounter{qcounter}\n')
-    fout.write ('\t\\end{minipage}}\\newline{}{\\vspace{10pt}\\\\ #2}' +
-        '\\newline{}\\vspace{10pt}}\n\n')
+    fout.write ('\\newcommand{\\mitem}[2] {%\n')
+    fout.write ('\t\\noindent\\framebox{%\n')
+    fout.write ('\t\t\\noindent\\begin{minipage}{0.95\\textwidth}%\n')
+    fout.write ('\t\t{\\arabic{qcounter}.~#1}%\n')
+    fout.write ('\t\t\\stepcounter{qcounter}%\n')
+    fout.write ('\t\\end{minipage}}\\par%\n')
+    fout.write ('\t{\\vspace{10pt}\\noindent#2}\\par%\n')
+    fout.write ('\t\\vspace{20pt}%\n')
+    fout.write ('}%\n\n')
 
     fout.write ('\\definecolor{greencolour}{rgb}{0.30,0.65,0.15}\n')
 
     fout.write ('\\newcommand{\\greenheading}[1]{%\n')
-    fout.write ('\t\\vspace{10pt}\n')
-    fout.write ('\t\\noindent\\color{greencolour}\n')
+    fout.write ('\t\\vspace{10pt}%\n')
+    fout.write ('\t\\noindent\\color{greencolour}%\n')
     fout.write ('\t\\refstepcounter{section}%\n')
     fout.write ('\t\\addcontentsline{toc}{section}{#1}%\n')
-    fout.write ('\t{\\rule[3pt]{0.15\\textwidth}{2pt}}\\hspace{0.025\\textwidth}\n')
+    fout.write ('\t{\\rule[3pt]{0.15\\textwidth}{2pt}}\\hspace{0.025\\textwidth}%\n')
     fout.write ('\t{\\bf\\Large{\\framebox[1.5\\width]{#1}}}%\n')
-    fout.write ('\t\\color{black}\\normalsize\\vspace{10pt}}\\\\%\n\n')
+    fout.write ('\t{\\hspace{0.025\\textwidth}\\rule[3pt]{0.15\\textwidth}{2pt}}%\n')
+    fout.write ('\t\\color{black}\\normalsize\\vspace{10pt}%\n')
+    fout.write ('}%\n\n')
 
     fout.write ('\\begin{document}\n')
     fout.write ('\\maketitle\n')
@@ -217,11 +223,11 @@ def readReviews (bibkeys):
 
 def writeReviews (reviews, file):
     year = reviews [0].year
-    fout.write ("\\greenheading{" + str (year) + "}\\\\" + "\n\n")
+    fout.write ("\\greenheading{" + str (year) + "}\\bigskip" + "\n\n")
 
     for rev in reviews:
         if rev.year > year
-            fout.write ("\\greenheading{" + str (rev.year) + "}\\\\" + "\n\n")
+            fout.write ("\\greenheading{" + str (rev.year) + "}\\bigskip" + "\n\n")
             year = rev.year
 
         fout.write ("\mitem{" + rev.author + ' (' + str (rev.year) +\
@@ -239,6 +245,8 @@ def writeReviews (reviews, file):
         if not rev.review is None:
             rev.review = rev.review.replace ("\n\t", "\n")
             fout.write ("{" + rev.review + "}")
+        else:
+            fout.write ("{}")
 
         fout.write ("\n\n")
 
