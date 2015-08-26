@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 """
-make_lit_review
+make-lit-review
 
 Reads a .tex file, strips all bibtex keys from that file, then scans a .bib file for
 those references, and produces a nicely formatted pdf literature review based on the
@@ -250,13 +250,13 @@ def writeReviews (reviews, file):
 
         fout.write ("\n\n")
 
-    print "Written ", len (reviews), "reviews to lit_review.tex"
+    print "Written ", len (reviews), "reviews to lit-review.tex"
 
     return
 
 def makePdf ():
     os.chdir (wd)
-    os.system ("latex -interaction=nonstopmode lit_review.tex");
+    os.system ("latex -interaction=nonstopmode lit-review.tex");
     os.system ("latex -interaction=nonstopmode lit-review.tex");
     #os.system ("dvipdfmx lit-review.dvi");
     # hyperref necessitates div->ps->pdf
