@@ -262,7 +262,7 @@ def makePdf ():
     # hyperref necessitates div->ps->pdf
     os.system ("dvips -P pdf -q lit-review.dvi");
     os.system ("ps2pdf lit-review.ps");
-    os.system ("rm lit_review.aux lit_review.dvi lit_review.log");
+    os.system ("rm lit-review.aux lit-review.dvi lit-review.log");
     return
 
 fout = open (wd + 'lit-review.tex', 'w')
