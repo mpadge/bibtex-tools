@@ -226,7 +226,7 @@ def writeReviews (reviews, file):
     fout.write ("\\greenheading{" + str (year) + "}\\bigskip" + "\n\n")
 
     for rev in reviews:
-        if rev.year > year
+        if rev.year > year:
             fout.write ("\\greenheading{" + str (rev.year) + "}\\bigskip" + "\n\n")
             year = rev.year
 
