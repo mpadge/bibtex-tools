@@ -141,7 +141,9 @@ def readBibKeys ():
             if re.search (r']', cites).start () < bpos:
                 cites = re.split (r']', cites)[2]
                 bpos = re.search (r'{', cites).start ()
-        if (bpos < 2): # only include actual '\citeX{' commands
+        if (bpos < 4): 
+            # only include actual '\citeX{' commands, but which can extend to
+            # \citealt
             ref_list_temp = re.split (r'{', cites) [1]
             ref_list_temp = re.split (r'}', ref_list_temp) [0]
             cpos = re.search (r',', ref_list_temp)
