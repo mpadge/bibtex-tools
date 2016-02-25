@@ -8,6 +8,8 @@ personal reviews.
 
 import re
 import regex
+import sys
+maxi = sys.maxint
 
 # Read .tex file and extract bibtex citation keys:
 f = open ('texfile.tex', 'r')
@@ -17,8 +19,17 @@ ref_split = rec.split (f.read ())
 print 'File contains', len (ref_split), 'cite commands',
 ref_list = []
 for cites in ref_split:
-    bpos = re.search (r'{', cites).start ()
-    if (bpos < 2): # only include actual '\citeX{' commands
+    sq = re.search (r'\[', cites)
+    if (sq):
+        sq = sq.start ()
+    else:
+        sq = maxi
+    sb = re.search (r'{', cites)
+    if (sb):
+        sb = sb.start ()
+    else:
+        sb = maxi
+    if sq < 2 or sb < 2: # only include actual '\citeX{' commands
         ref_list_temp = re.split (r'{', cites) [1]
         ref_list_temp = re.split (r'}', ref_list_temp) [0]
         cpos = re.search (r',', ref_list_temp)
