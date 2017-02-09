@@ -128,7 +128,13 @@ def writeHeader (fout):
     return
 
 def readBibKeys ():
-    f = open (wd + 'tex_document.tex', 'r')
+    # next 5 lines used to read multiple input files
+    infiles = ['main-file.tex', 'body.tex']
+    with open('junk.tex', 'w') as outfile:
+        for fname in infiles:
+            with open (fname) as infile:
+                outfile.write(infile.read())
+    f = open (wd + 'junk.tex', 'r')
     f.seek (0) 
     rec = re.compile (r'\\cite')
     ref_split = rec.split (f.read ())
@@ -157,6 +163,7 @@ def readBibKeys ():
     bibkeys = sorted (set (bibkeys))
     print 'and', len (bibkeys), 'unique references.'
     f.close ()
+    os.remove ('junk.tex')
     return bibkeys
 
 
@@ -265,6 +272,7 @@ def makePdf ():
     os.system ("dvips -P pdf -q lit-review.dvi");
     os.system ("ps2pdf lit-review.ps");
     os.system ("rm lit-review.aux lit-review.dvi lit-review.log");
+    os.system ("rm lit-review.out lit-review.ps lit-review.toc");
     return
 
 fout = open (wd + 'lit-review.tex', 'w')
